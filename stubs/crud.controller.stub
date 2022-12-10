@@ -40,7 +40,7 @@ class $CLASS_NAME$Controller extends Controller
      * @param  \Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($CLASS_NAME$Request $request)
     {
       $$SERVICE_SINGULAR$ =  $this->service->create($request->validated());
       return $this->successResponse(201, "$SERVICE_SINGULAR$ created.", $$SERVICE_SINGULAR$);
@@ -76,7 +76,7 @@ class $CLASS_NAME$Controller extends Controller
      * @param   \ $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($CLASS_NAME$Request $request, $id)
     {
       $$SERVICE_SINGULAR$ =  $this->service->update($id, $request->validated());
       return $this->successResponse(200, "$SERVICE_SINGULAR$ updated.", $$SERVICE_SINGULAR$);
