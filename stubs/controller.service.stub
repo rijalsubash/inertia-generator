@@ -1,0 +1,96 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use $NAMESPACE_SERVICE$;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class $CLASS_NAME$Controller extends Controller
+{
+    public function __construct(private $CLASS_NAME$Service $service){
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $SERVICE_PRURAL_VARIABLE$ = $this->service->paginate(request()->get('per_page', 20), ["*"], 'page', null, request('keywords', ''));
+        return $this->dataResponse(200, $SERVICE_PRURAL_VARIABLE$);
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+      $$SERVICE_SINGULAR$ =  $this->service->create($request->validated());
+      return $this->successResponse(201, "$SERVICE_SINGULAR$ created.", $$SERVICE_SINGULAR$);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param   $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+      $$SERVICE_SINGULAR$ =  $this->service->getById($id);
+      return $this->dataResponse(200, $$SERVICE_SINGULAR$);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param    $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Request  $request
+     * @param   \ $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+      $$SERVICE_SINGULAR$ =  $this->service->update($id, $request->validated());
+      return $this->successResponse(200, "$SERVICE_SINGULAR$ updated.", $$SERVICE_SINGULAR$);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param    $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+      $this->service->deleteById($id);
+      return $this->successResponse(200, "$SERVICE_SINGULAR$ Deleted.");
+    }
+}
