@@ -6,6 +6,7 @@ use App\Console\Commands\Generator\ControllerGenerator;
 use App\Console\Commands\Generator\FormRequestGenerator;
 use App\Console\Commands\Generator\MigrationGenerator;
 use App\Console\Commands\Generator\ModelGenerator;
+use App\Console\Commands\Generator\RouteGenerator;
 use App\Console\Commands\Generator\ServiceGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -40,6 +41,7 @@ class GenerateCrud extends Command
         private ControllerGenerator $controllerGenerator,
         private ServiceGenerator $serviceGenerator,
         private FormRequestGenerator $formRequestGenerator,
+        private RouteGenerator $routeGenerator,
     ) {
         parent::__construct();
 
@@ -56,10 +58,11 @@ class GenerateCrud extends Command
             $this->error("Fields are required to generate crud");
             return;
         };
+        $this->routeGenerator->generate($this->argument('model'));
         $this->formRequestGenerator->generate($this->argument('model'));
-        // $this->serviceGenerator->generate($this->argument('model'));
-        // $this->controllerGenerator->generate($this->argument('model'));
-        // $this->migrationGenerator->generate($this->argument('model'), $this->option('fields'));
+        $this->serviceGenerator->generate($this->argument('model'));
+        $this->controllerGenerator->generate($this->argument('model'));
+        $this->migrationGenerator->generate($this->argument('model'), $this->option('fields'));
         $this->modelGenerator->generate($this->argument('model'), $this->option('fields'));
     }
 }
