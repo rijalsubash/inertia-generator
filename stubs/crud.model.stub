@@ -11,5 +11,5 @@ class $class$ extends Model
 
     protected $fillable =
 
-    protected $rules =
+    public $rules =
 }
