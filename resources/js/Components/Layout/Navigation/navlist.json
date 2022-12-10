@@ -1,0 +1,12 @@
+[
+    {
+        "label": "Dashboard",
+        "route": "dashboard",
+        "icon_name": "Dashboard"
+    },
+    {
+        "label": "Profile Edit",
+        "route": "profile.edit",
+        "icon_name": "default"
+    }
+]
