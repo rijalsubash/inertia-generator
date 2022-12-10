@@ -1,31 +1,13 @@
 import { usePage } from "@inertiajs/inertia-react";
 import React, { useEffect, useState } from "react";
 import NavLink from "./Navlink";
-import navLinkLists from "./navlist.json";
 
-const MobileNavigation = () => {
-    const [icons, setIcons] = useState([]);
-    const myAllIcons = import.meta.glob("./icons/**/*.svg");
-    const setIconList = async (navLinkLists) => {
-        navLinkLists.forEach((navLnk) => {
-            myAllIcons["./icons/" + navLnk.icon_name + ".svg"]().then(
-                (icPath) => {
-                    setIcons((oldValue) => [
-                        ...oldValue,
-                        { ...icPath, name: navLnk.icon_name },
-                    ]);
-                }
-            );
-        });
-    };
+
+const MobileNavigation = ({icons, navLinkLists}) => {
 
     const getIconByName = (name) => {
         return icons.find((ic) => ic.name == name)?.default;
     };
-
-    useEffect(() => {
-        setIconList(navLinkLists);
-    }, []);
 
     const page = usePage().props;
     return (
