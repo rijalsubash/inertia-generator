@@ -8,9 +8,6 @@ use App\Console\Commands\Generator\ModelGenerator;
 use App\Console\Commands\Generator\ServiceGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Pluralizer;
-use Illuminate\Support\Str;
 
 class GenerateCrud extends Command
 {
