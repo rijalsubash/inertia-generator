@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class MigrationGenerator extends BaseGenerator
 {
-    public function handleModelAndMigration($model, $file)
+    public function generate($model, $file)
     {
         $fieldsArr = (array) $this->getFieldsFromJson(config('generator.field_file_path') . '/' . $file);
         // $columnsArray = array_column($fieldsArr, 'column_name');
@@ -26,13 +26,13 @@ class MigrationGenerator extends BaseGenerator
         $fields = "";
         $fieldsFile = file_get_contents($this->getStubPath('partials/migration_item'));
         foreach ($fieldsArr as  $field) {
-            $isRequired = Str::contains($field['rules'],'required');
+            $isRequired = Str::contains($field['rules'], 'required');
             $data = $this->getStubContents($fieldsFile, [
                 'type' => $field['data_type'] ?? "string",
                 'column_name' => $field['column_name']
             ], true);
             $data = $isRequired ? $data : substr_replace($data, '->nullable();', -2);
-            $fields .=$data;
+            $fields .= $data;
         }
         $migrationFile[17] = $fields . $migrationFile[17];
         $publishableContent = $this->getStubContents(implode('', $migrationFile), [
@@ -58,5 +58,17 @@ class MigrationGenerator extends BaseGenerator
     public function getMigrationNameFromModel($model)
     {
         return $this->getPath('create_' . $this->getTable($model) . '_table', database_path('migrations'));
+    }
+
+    /**
+     * Get the full path to the migration.
+     *
+     * @param  string  $name
+     * @param  string  $path
+     * @return string
+     */
+    protected function getPath($name, $path)
+    {
+        return $path . '/' . $this->getDatePrefix() . '_' . $name . '.php';
     }
 }

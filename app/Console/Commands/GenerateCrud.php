@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Console\Commands\Generator\MigrationGenerator;
+use App\Console\Commands\Generator\ModelGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
@@ -32,8 +33,11 @@ class GenerateCrud extends Command
      * Create a new command instance.
      * @param Filesystem $files
      */
-    public function __construct(Filesystem $files, private MigrationGenerator $migrationGenerator)
-    {
+    public function __construct(
+        Filesystem $files,
+        private MigrationGenerator $migrationGenerator,
+        private ModelGenerator $modelGenerator
+    ) {
         parent::__construct();
 
         $this->files = $files;
@@ -45,13 +49,14 @@ class GenerateCrud extends Command
      */
     public function handle()
     {
-        if($this->option('fields') == 'default'){
+        if ($this->option('fields') == 'default') {
             $this->error("Fields are required to generate crud");
             return;
         };
         // $this->handleService();
         // $this->HandleController();
-        $this->migrationGenerator->handleModelAndMigration($this->argument('model'),$this->option('fields'));
+        $this->migrationGenerator->generate($this->argument('model'), $this->option('fields'));
+        $this->modelGenerator->generate($this->argument('model'), $this->option('fields'));
     }
 
 
