@@ -1,0 +1,14 @@
+[
+    {
+        "column_name": "name",
+        "data_type" : "string",
+        "input_type": "text",
+        "rules": "required|in:12,23"
+    },
+    {
+        "column_name": "description",
+        "data_type" : "text",
+        "input_type": "textarea",
+        "rules": "nullable"
+    }
+]
