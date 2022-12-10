@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\Generator\MigrationGenerator;
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Pluralizer;
 use Illuminate\Support\Str;
@@ -14,7 +16,7 @@ class GenerateCrud extends Command
      *
      * @var string
      */
-    protected $signature = 'make:crud {model}';
+    protected $signature = 'make:crud {model} {--fields=default}';
 
     /**
      * The console generates the crud on basis of given arguments.
@@ -23,6 +25,19 @@ class GenerateCrud extends Command
      */
     protected $description = 'generates the crud on basis of given arguments';
 
+
+    protected $files;
+
+    /**
+     * Create a new command instance.
+     * @param Filesystem $files
+     */
+    public function __construct(Filesystem $files, private MigrationGenerator $migrationGenerator)
+    {
+        parent::__construct();
+
+        $this->files = $files;
+    }
     /**
      * Execute the console command.
      *
@@ -30,13 +45,16 @@ class GenerateCrud extends Command
      */
     public function handle()
     {
-
+        if($this->option('fields') == 'default'){
+            $this->error("Fields are required to generate crud");
+            return;
+        };
+        // $this->handleService();
+        // $this->HandleController();
+        $this->migrationGenerator->handleModelAndMigration($this->argument('model'),$this->option('fields'));
     }
 
-    public function handleModelAndMigration()
-    {
-        Artisan::call("make:model {$this->argument('model')} -m");
-    }
+
 
     public function handleInterface()
     {
@@ -55,7 +73,6 @@ class GenerateCrud extends Command
     public function handleController()
     {
         $controllerPath = $this->getControllerSourceFilePath();
-        // dd(dirname($interfacePath), $interfacePath);
         $this->makeDirectory(dirname($controllerPath));
         $contents = $this->getControllerSourceFile();
 
@@ -131,7 +148,7 @@ class GenerateCrud extends Command
     {
         return [
             'NAMESPACE' => 'App\\Services',
-            'CLASS_NAME' => $this->getSingularClassName($this->argument('service')),
+            'CLASS_NAME' => $this->getSingularClassName($this->argument('model')),
         ];
     }
     /**
