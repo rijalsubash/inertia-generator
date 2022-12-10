@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Console\Commands\Generator\ControllerGenerator;
 use App\Console\Commands\Generator\MigrationGenerator;
 use App\Console\Commands\Generator\ModelGenerator;
+use App\Console\Commands\Generator\ServiceGenerator;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
@@ -38,7 +39,8 @@ class GenerateCrud extends Command
         Filesystem $files,
         private MigrationGenerator $migrationGenerator,
         private ModelGenerator $modelGenerator,
-        private ControllerGenerator $controllerGenerator
+        private ControllerGenerator $controllerGenerator,
+        private ServiceGenerator $serviceGenerator
     ) {
         parent::__construct();
 
@@ -55,10 +57,10 @@ class GenerateCrud extends Command
             $this->error("Fields are required to generate crud");
             return;
         };
-        // $this->handleService();
-        $this->controllerGenerator->generate($this->argument('model'));
-        $this->migrationGenerator->generate($this->argument('model'), $this->option('fields'));
-        $this->modelGenerator->generate($this->argument('model'), $this->option('fields'));
+        // $this->serviceGenerator->generate($this->argument('model'));
+        // $this->controllerGenerator->generate($this->argument('model'));
+        // $this->migrationGenerator->generate($this->argument('model'), $this->option('fields'));
+        // $this->modelGenerator->generate($this->argument('model'), $this->option('fields'));
     }
 
 
@@ -66,7 +68,6 @@ class GenerateCrud extends Command
     public function handleInterface()
     {
         $interfacePath = $this->getInterfaceSourceFilePath();
-        // dd(dirname($interfacePath), $interfacePath);
         $this->makeDirectory(dirname($interfacePath));
         $contents = $this->getControllerSourceFile();
 
@@ -75,21 +76,6 @@ class GenerateCrud extends Command
             $this->info("File : {$interfacePath} created");
         } else {
             $this->info("File : {$interfacePath} already exits");
-        }
-    }
-
-    public function handleService()
-    {
-        $servicePath = $this->getServiceSourceFilePath();
-        $this->makeDirectory(dirname($servicePath));
-
-        $contents = $this->getServiceSourceFile();
-
-        if (!$this->files->exists($servicePath)) {
-            $this->files->put($servicePath, $contents);
-            $this->info("File : {$servicePath} created");
-        } else {
-            $this->info("File : {$servicePath} already exits");
         }
     }
 
@@ -106,36 +92,6 @@ class GenerateCrud extends Command
     }
 
 
-
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return $rootNamespace . '\Services';
-    }
-
-    /**
-     * Return the Singular Capitalize Name
-     * @param $name
-     * @return string
-     */
-    public function getSingularClassName($service)
-    {
-        return ucwords(Pluralizer::singular($service));
-    }
-
-    /**
-     **
-     * Map the stub variables present in stub to its value
-     *
-     * @return array
-     *
-     */
-    public function getServiceStubVariables()
-    {
-        return [
-            'NAMESPACE' => 'App\\Services',
-            'CLASS_NAME' => $this->getSingularClassName($this->argument('model')),
-        ];
-    }
     /**
      **
      * Map the stub variables present in stub to its value
@@ -151,17 +107,6 @@ class GenerateCrud extends Command
         ];
     }
 
-
-    /**
-     * Get the stub path and the stub variables
-     *
-     * @return bool|mixed|string
-     *
-     */
-    public function getServiceSourceFile()
-    {
-        return $this->getStubContents($this->getStubPath('service'), $this->getServiceStubVariables());
-    }
     /**
      * Get the stub path and the stub variables
      *
@@ -173,33 +118,6 @@ class GenerateCrud extends Command
         return $this->getStubContents($this->getStubPath('interface'), $this->getInterfaceStubVariables());
     }
 
-
-    /**
-     * Replace the stub variables(key) with the desire value
-     *
-     * @param $stub
-     * @param array $stubVariables
-     * @return bool|mixed|string
-     */
-    public function getStubContents($stub, $stubVariables = [])
-    {
-        $contents = file_get_contents($stub);
-
-        foreach ($stubVariables as $search => $replace) {
-            $contents = str_replace('$' . $search . '$', $replace, $contents);
-        }
-
-        return $contents;
-    }
-    /**
-     * Get the full path of generate class
-     *
-     * @return string
-     */
-    public function getServiceSourceFilePath()
-    {
-        return base_path('app/Services') . '/' . $this->getSingularClassName($this->argument('model')) . 'Service.php';
-    }
     /**
      * Get the full path of generate class
      *
