@@ -10,14 +10,16 @@ class ModelGenerator extends BaseGenerator
     public function generate($model, $file)
     {
         $fieldsArr = (array) $this->getFieldsFromJson(config('generator.field_file_path') . '/' . $file);
-        $columnsArray = array_column($fieldsArr, 'column_name');
-        $this->handleCreateModel($model, $columnsArray);
+        $this->handleCreateModel($model, $fieldsArr);
     }
 
-    public function handleCreateModel($model, $columnNames)
+    public function handleCreateModel($model, $fieldsArr)
     {
         $modelFilePath = file($this->getStubPath('crud.model'));
+        $columnNames = array_column($fieldsArr, 'column_name');
+        $rulesArray = $this->getRules($fieldsArr);
         $modelFilePath[11] = $modelFilePath[11] . json_encode($columnNames) . ';';
+        $modelFilePath[13] = $modelFilePath[13] . $rulesArray . ';';
         $modelData = $this->getStubContents(implode('', $modelFilePath), $this->getReplaceData($model, $columnNames), true);
 
         $this->publishFile($modelData,$this->getModelPath($model));
@@ -33,6 +35,18 @@ class ModelGenerator extends BaseGenerator
 
     public function getModelPath($model)
     {
-        return \app_path('Models/'.$this->getSingularClassName($model));
+        return app_path('Models/'.$this->getSingularClassName($model));
+    }
+
+    public function getRules($fieldArr)
+    {
+        $returnData = '[';
+        foreach ($fieldArr as $key => $value) {
+            if($key > 0){
+                $returnData .= "' ,";
+            }
+            $returnData = $returnData. "'".$value['column_name']. "' => '" .$value['rules'] ;
+        }
+       return  $returnData."']";
     }
 }
