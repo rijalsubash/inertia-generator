@@ -21,15 +21,6 @@ class BaseGenerator
     {
         return base_path() . '/stubs/' . $type . '.stub';
     }
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getControllerStubPath()
-    {
-        return \base_path() . '/stubs/controller.service.stub';
-    }
 
 
 

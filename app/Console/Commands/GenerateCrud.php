@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\Generator\ControllerGenerator;
 use App\Console\Commands\Generator\MigrationGenerator;
 use App\Console\Commands\Generator\ModelGenerator;
 use Illuminate\Console\Command;
@@ -36,7 +37,8 @@ class GenerateCrud extends Command
     public function __construct(
         Filesystem $files,
         private MigrationGenerator $migrationGenerator,
-        private ModelGenerator $modelGenerator
+        private ModelGenerator $modelGenerator,
+        private ControllerGenerator $controllerGenerator
     ) {
         parent::__construct();
 
@@ -54,7 +56,7 @@ class GenerateCrud extends Command
             return;
         };
         // $this->handleService();
-        // $this->HandleController();
+        $this->controllerGenerator->generate($this->argument('model'));
         $this->migrationGenerator->generate($this->argument('model'), $this->option('fields'));
         $this->modelGenerator->generate($this->argument('model'), $this->option('fields'));
     }
@@ -73,19 +75,6 @@ class GenerateCrud extends Command
             $this->info("File : {$interfacePath} created");
         } else {
             $this->info("File : {$interfacePath} already exits");
-        }
-    }
-    public function handleController()
-    {
-        $controllerPath = $this->getControllerSourceFilePath();
-        $this->makeDirectory(dirname($controllerPath));
-        $contents = $this->getControllerSourceFile();
-
-        if (!$this->files->exists($controllerPath)) {
-            $this->files->put($controllerPath, $contents);
-            $this->info("Controller : {$controllerPath} created");
-        } else {
-            $this->error("Controller : {$controllerPath} already exits");
         }
     }
 
@@ -114,15 +103,6 @@ class GenerateCrud extends Command
     protected function getStubPath($type)
     {
         return \base_path() . '/stubs/' . $type . '.stub';
-    }
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getControllerStubPath()
-    {
-        return \base_path() . '/stubs/controller.service.stub';
     }
 
 
@@ -170,23 +150,7 @@ class GenerateCrud extends Command
             'CLASS_NAME' => $this->getSingularClassName($this->argument('model')),
         ];
     }
-    /**
-     **
-     * Map the stub variables present in stub to its value
-     *
-     * @return array
-     *
-     */
-    public function getControllerStubVariables()
-    {
-        return [
-            'NAMESPACE' => 'App\\Http\\Controllers\\Api',
-            'CLASS_NAME' => $this->getSingularClassName($this->argument('model')),
-            'NAMESPACE_SERVICE' => 'App\\Services\\' . $this->argument('model') . 'Service',
-            'SERVICE_PRURAL_VARIABLE' => '$' . Str::plural(Str::lower($this->argument('model'))),
-            'SERVICE_SINGULAR' => Str::singular(Str::lower($this->argument('model')))
-        ];
-    }
+
 
     /**
      * Get the stub path and the stub variables
@@ -208,16 +172,7 @@ class GenerateCrud extends Command
     {
         return $this->getStubContents($this->getStubPath('interface'), $this->getInterfaceStubVariables());
     }
-    /**
-     * Get the stub path and the stub variables
-     *
-     * @return bool|mixed|string
-     *
-     */
-    public function getControllerSourceFile()
-    {
-        return $this->getStubContents($this->getControllerStubPath(), $this->getControllerStubVariables());
-    }
+
 
     /**
      * Replace the stub variables(key) with the desire value
@@ -253,15 +208,6 @@ class GenerateCrud extends Command
     public function getInterfaceSourceFilePath()
     {
         return base_path('app/Contracts') . '/' . $this->getSingularClassName($this->argument('model')) . 'ServiceInterface.php';
-    }
-    /**
-     * Get the full path of generate class
-     *
-     * @return string
-     */
-    public function getControllerSourceFilePath()
-    {
-        return base_path('app/Http/Controllers/Api') . '/' . $this->getSingularClassName($this->argument('model')) . 'Controller.php';
     }
 
     /**
