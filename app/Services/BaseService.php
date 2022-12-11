@@ -219,7 +219,7 @@ abstract class BaseService
      * @param  null  $page
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function paginate($limit = 25, array $columns = ['*'], $pageName = 'page', $page = null, $keywords = '')
+    public function paginate($limit = 25,  $page = null, $keywords = '', array $columns = ['*'], $pageName = 'page',)
     {
         $this->newQuery()->eagerLoad()->setClauses()->setScopes();
         if (!empty($keywords) && count($this->getSearchableFields())) {
