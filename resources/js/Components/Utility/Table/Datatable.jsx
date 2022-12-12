@@ -198,13 +198,13 @@ const Datatable = ({
     let Action = actionComponent;
     return (
         <>
-            {/* <div className="col-auto">
+            <div className="col-auto">
                 <div className="grid grid-cols-6 gap-4 ">
                     <div className="col-span-12 md:col-end-7 md:col-span-2 ">
                         <TextInput onChange={handleFilter} />
                     </div>
                 </div>
-            </div> */}
+            </div>
             <table className="w-full whitespace-no-wrap">
                 <thead>
                     <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
@@ -235,6 +235,19 @@ const Datatable = ({
                                         </td>
                                     );
                                 })}
+                                {actionComponent && (
+                                    <td>
+                                        <Action
+                                            row={row}
+                                            key={row[rowKey]}
+                                            onChangeData={() => {
+                                                Inertia.reload({
+                                                    only: ["tickets"],
+                                                });
+                                            }}
+                                        ></Action>
+                                    </td>
+                                )}
                             </tr>
                         );
                     })}
