@@ -8,5 +8,10 @@
         "label": "Profile Edit",
         "route": "profile.edit",
         "icon_name": "default"
+    },
+    {
+        "label": "My Stub Test",
+        "route": "stubtest.index",
+        "icon_name": "default"
     }
 ]
