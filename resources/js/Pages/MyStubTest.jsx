@@ -26,11 +26,11 @@ export default function MyStubTest(props) {
             // errors={props.errors}
         >
             <Head title="Dashboard" />
-            <div class="container grid px-6 mx-auto">
+            <div className="container grid px-6 mx-auto">
                 <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
                     Table
                 </h2>
-                <div class="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
+                <div className="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
                     <div className="w-full overflow-x-auto">
                         <Datatable columns={columns} data={props.data} />
                     </div>
