@@ -13,11 +13,12 @@ const MyStubTestField = ({ auth, pagedata = {} }) => {
         processing,
         reset,
         errors,
-        post
+        post,
+        patch,
     } = useForm({
         name: pagedata.name || "",
         description: pagedata.description || "",
-        create_another: false
+        create_another: false,
     });
     const onHandleChange = (event) => {
         setData(
@@ -28,14 +29,17 @@ const MyStubTestField = ({ auth, pagedata = {} }) => {
         );
     };
 
-    const handleSubmit = (e)=> {
-        e.preventDefault()
-        post(route('stubtest.store'))
-    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (pagedata.id) {
+            patch(route("stubtest.update", pagedata.id));
+        } else {
+            post(route("stubtest.store"));
+        }
+    };
     return (
         <AuthenticatedLayout
             auth={auth}
-            // errors={props.errors}
         >
             <div className="container px-6 mx-auto grid">
                 <div className="flex justify-between">
@@ -59,7 +63,6 @@ const MyStubTestField = ({ auth, pagedata = {} }) => {
                                     autoComplete="name"
                                     isFocused={true}
                                     handleChange={onHandleChange}
-
                                 />
 
                                 <InputError
@@ -92,7 +95,7 @@ const MyStubTestField = ({ auth, pagedata = {} }) => {
                         </div>
                         <div className=" flex my-4 w-100">
                             <PrimaryButton>Submit</PrimaryButton>
-                            <div className="block mx-4 mt-2">
+                            {!pagedata.id &&<div className="block mx-4 mt-2">
                                 <label className="flex items-center">
                                     <Checkbox
                                         name="create_another"
@@ -103,7 +106,7 @@ const MyStubTestField = ({ auth, pagedata = {} }) => {
                                         Create Another
                                     </span>
                                 </label>
-                            </div>
+                            </div>}
                         </div>
                     </form>
                 </div>

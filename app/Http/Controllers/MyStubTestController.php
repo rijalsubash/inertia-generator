@@ -52,6 +52,13 @@ class MyStubTestController extends WebBaseController
         return $this->renderPage('MyStubTest/Show', ['data' => $data]);
     }
 
+    public function edit($id)
+    {
+        $data = $this->service->getById($id);
+        \abort_if(empty($data), 404, 'My Stub Test not found');
+        return $this->renderPage('MyStubTest/Fields', ['pagedata' => $data]);
+    }
+
     /**
      * Update the resource in storage.
      *
@@ -59,7 +66,7 @@ class MyStubTestController extends WebBaseController
      * @param  \ $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MyStubTestRequest $request, $id)
     {
         $data = $this->service->getById($id);
         \abort_if(empty($data), 404, 'My Stub Test not found');
