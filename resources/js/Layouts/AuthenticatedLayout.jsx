@@ -1,6 +1,8 @@
 import Header from "@/Components/Layout/Header";
 import Sidebar from "@/Components/Layout/Sidebar";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Authenticated({ auth, header, children }) {
     const [isNavbarOpen, setIsNavbarOpen] = useState(false);
@@ -19,6 +21,7 @@ export default function Authenticated({ auth, header, children }) {
                     <main className="h-full overflow-y-auto">{children}</main>
                 </div>
             </div>
+            <ToastContainer />
         </>
     );
 }

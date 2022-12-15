@@ -2,19 +2,22 @@ import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import { Inertia } from "@inertiajs/inertia";
-import { Link } from "@inertiajs/inertia-react";
 import { useState } from "react";
+import { toast } from 'react-toastify';
 
-const DeleteButton = ({url}) => {
+const DeleteButton = ({ url }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const closeModal = () => {
         setIsModalOpen(false);
     };
 
-    const handleProceed = ()=> {
-        Inertia.delete(url)
-    }
+    const handleProceed = () => {
+        Inertia.delete(url, {
+            onSuccess: () => toast.success("Item Deleted successfully"),
+            onError: (e) => toast.error("Cannot delete Item, Try again later"),
+        });
+    };
     return (
         <>
             <button onClick={() => setIsModalOpen(true)}>
@@ -63,9 +66,12 @@ const DeleteButton = ({url}) => {
                     <SecondaryButton onClick={closeModal}>
                         Cancel
                     </SecondaryButton>
-                    <DangerButton onClick={handleProceed} className="ml-3">Yes</DangerButton>
+                    <DangerButton onClick={handleProceed} className="ml-3">
+                        Yes
+                    </DangerButton>
                 </div>
             </Modal>
+
         </>
     );
 };

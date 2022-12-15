@@ -5,6 +5,7 @@ import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Checkbox from "@/Components/Checkbox";
+import { toast } from "react-toastify";
 const MyStubTestField = ({ auth, pagedata = {} }) => {
     const {
         data,
@@ -28,19 +29,28 @@ const MyStubTestField = ({ auth, pagedata = {} }) => {
                 : event.target.value
         );
     };
+    const options = {
+        onSuccess: () => toast.success("Saved successfully"),
+        onerror: () => toast.error("Cannot save the changes"),
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        toast.success("Saved successfully")
         if (pagedata.id) {
-            patch(route("stubtest.update", pagedata.id));
+            patch(route("stubtest.update", pagedata.id), {
+                onSuccess: () => toast.success("Saved successfully"),
+                onerror: () => toast.error("Cannot save the changes"),
+            });
         } else {
-            post(route("stubtest.store"));
+            post(route("stubtest.store"), {
+                onSuccess: () => toast.success("Saved successfully"),
+                onerror: () => toast.error("Cannot save the changes"),
+            });
         }
     };
     return (
-        <AuthenticatedLayout
-            auth={auth}
-        >
+        <AuthenticatedLayout auth={auth}>
             <div className="container px-6 mx-auto grid">
                 <div className="flex justify-between">
                     <div className="flex-none w-50">
@@ -94,19 +104,23 @@ const MyStubTestField = ({ auth, pagedata = {} }) => {
                             </div>
                         </div>
                         <div className=" flex my-4 w-100">
-                            <PrimaryButton>Submit</PrimaryButton>
-                            {!pagedata.id &&<div className="block mx-4 mt-2">
-                                <label className="flex items-center">
-                                    <Checkbox
-                                        name="create_another"
-                                        value={data.create_another}
-                                        handleChange={onHandleChange}
-                                    />
-                                    <span className="ml-2 text-sm text-gray-600">
-                                        Create Another
-                                    </span>
-                                </label>
-                            </div>}
+                            <PrimaryButton processing={processing}>
+                                Submit
+                            </PrimaryButton>
+                            {!pagedata.id && (
+                                <div className="block mx-4 mt-2">
+                                    <label className="flex items-center">
+                                        <Checkbox
+                                            name="create_another"
+                                            value={data.create_another}
+                                            handleChange={onHandleChange}
+                                        />
+                                        <span className="ml-2 text-sm text-gray-600">
+                                            Create Another
+                                        </span>
+                                    </label>
+                                </div>
+                            )}
                         </div>
                     </form>
                 </div>
