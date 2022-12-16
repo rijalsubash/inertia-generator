@@ -10,14 +10,7 @@ class MigrationGenerator extends BaseGenerator
     public function generate($model, $file)
     {
         $fieldsArr = (array) $this->getFieldsFromJson(config('generator.field_file_path') . '/' . $file);
-        // $columnsArray = array_column($fieldsArr, 'column_name');
         $this->handleCreateMigration($model, $fieldsArr);
-        // $this->handleCreateModel($model, $columnsArray);
-    }
-
-    public function handleCreateModel($model, $columnNames)
-    {
-        Artisan::call("make:model {$model}");
     }
 
     public function handleCreateMigration($model, $fieldsArr)
