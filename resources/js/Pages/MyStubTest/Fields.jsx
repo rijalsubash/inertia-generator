@@ -6,7 +6,7 @@ import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Checkbox from "@/Components/Checkbox";
 import { toast } from "react-toastify";
-const MyStubTestField = ({ auth, pagedata = {} }) => {
+const MyStubTestField = ({ auth, pagedata = {} , toastData}) => {
     const {
         data,
         setData,
@@ -29,28 +29,21 @@ const MyStubTestField = ({ auth, pagedata = {} }) => {
                 : event.target.value
         );
     };
-    const options = {
-        onSuccess: () => toast.success("Saved successfully"),
-        onerror: () => toast.error("Cannot save the changes"),
-    };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        toast.success("Saved successfully")
         if (pagedata.id) {
-            patch(route("stubtest.update", pagedata.id), {
-                onSuccess: () => toast.success("Saved successfully"),
-                onerror: () => toast.error("Cannot save the changes"),
-            });
+            patch(route("stubtest.update", pagedata.id));
         } else {
             post(route("stubtest.store"), {
-                onSuccess: () => toast.success("Saved successfully"),
-                onerror: () => toast.error("Cannot save the changes"),
+                onSuccess : ()=>  reset()
             });
         }
+
     };
     return (
-        <AuthenticatedLayout auth={auth}>
+        <AuthenticatedLayout auth={auth} toastData={toastData}>
             <div className="container px-6 mx-auto grid">
                 <div className="flex justify-between">
                     <div className="flex-none w-50">

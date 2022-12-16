@@ -34,9 +34,9 @@ class MyStubTestController extends WebBaseController
     {
         $data = $this->service->create($request->validated());
         if ($request->create_another) {
-            return back();
+            return back()->with('alert', ['message'=> 'Mystubtest Created.' ]);
         }
-        return \redirect()->route('stubtest.index');
+        return \redirect()->route('stubtest.index')->with('alert', ['message'=> 'Mystubtest Created.' ]);
     }
 
     /**
@@ -71,7 +71,7 @@ class MyStubTestController extends WebBaseController
         $data = $this->service->getById($id);
         \abort_if(empty($data), 404, 'My Stub Test not found');
         $this->service->update($id, $request->validated());
-        return \redirect()->route('stubtest.index');
+        return \redirect()->route('stubtest.index')->with('alert', ['message'=> 'Mystubtest updated.' ]);
     }
 
     /**
@@ -85,6 +85,6 @@ class MyStubTestController extends WebBaseController
         $data = $this->service->getById($id);
         \abort_if(empty($data), 404, 'My Stub Test not found');
         $this->service->deleteById($id);
-        return \redirect()->route('stubtest.index');
+        return \redirect()->route('stubtest.index')->with('alert', ['message'=> 'Mystubtest deleted.' ]);
     }
 }

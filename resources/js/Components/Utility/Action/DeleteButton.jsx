@@ -13,10 +13,12 @@ const DeleteButton = ({ url }) => {
     };
 
     const handleProceed = () => {
-        Inertia.delete(url, {
-            onSuccess: () => toast.success("Item Deleted successfully"),
-            onError: (e) => toast.error("Cannot delete Item, Try again later"),
-        });
+        Inertia.delete(url
+        //     , {
+        //     onSuccess: () => toast.success("Item Deleted successfully"),
+        //     onError: (e) => toast.error("Cannot delete Item, Try again later"),
+        // }
+        );
     };
     return (
         <>

@@ -24,7 +24,7 @@ export default function MyStubTest(props) {
         Inertia.get(route('stubtest.create'))
     }
     return (
-        <AuthenticatedLayout auth={props.auth}>
+        <AuthenticatedLayout auth={props.auth} toastData={props.toastData}>
             <Head title="My Stub Test" />
             <div className="container grid px-6 mx-auto">
                 <div className="flex justify-between">
