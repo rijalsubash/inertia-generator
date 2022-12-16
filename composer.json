@@ -19,6 +19,7 @@
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
+        "mreduar/laravel-phpcs": "^1.8",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0"
@@ -60,7 +61,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "minimum-stability": "dev",
