@@ -46,7 +46,7 @@ class ViewGenerator extends BaseGenerator
 
     public function getRoute($model)
     {
-        return Str::plural(Str::lower($model));
+        return Str::slug(Str::plural($model));
     }
 
     // Example response of this method

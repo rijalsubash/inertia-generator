@@ -15,7 +15,7 @@ class MyStubTestController extends WebBaseController
     }
     public function index()
     {
-        $data = $this->service->paginate(request('perPage'), request('page'), request('keyword'));
+        $data = $this->service->paginate(request('perPage'), request('keyword'));
         return $this->renderPage('MyStubTest/Index', ['data' => $data]);
     }
 

@@ -35,7 +35,7 @@ class ModelGenerator extends BaseGenerator
 
     public function getModelPath($model)
     {
-        return app_path('Models/'.$this->getSingularClassName($model));
+        return app_path('Models/'.$this->getSingularClassName($model) .'.php');
     }
 
     public function getRules($fieldArr)

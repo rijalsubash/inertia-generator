@@ -45,7 +45,8 @@ class ControllerGenerator extends BaseGenerator
             'CLASS_NAME' => $this->getSingularClassName($model),
             'NAMESPACE_SERVICE' => 'App\\Services\\' . $model . 'Service',
             'SERVICE_PRURAL_VARIABLE' => '$' . Str::plural(Str::lower($model)),
-            'SERVICE_SINGULAR' => Str::singular(Str::lower($model))
+            'SERVICE_SINGULAR' => Str::singular(Str::lower($model)),
+            'INDEX_ROUTE' => $this->getRoute($model)
         ];
     }
 
@@ -66,6 +67,6 @@ class ControllerGenerator extends BaseGenerator
      */
     protected function getControllerStubPath()
     {
-        return \base_path() . '/stubs/crud.controller.stub';
+        return \base_path() . '/stubs/crud.webcontroller.stub';
     }
 }

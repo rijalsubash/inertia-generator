@@ -4,6 +4,7 @@ namespace App\Console\Commands\Generator;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Pluralizer;
+use Illuminate\Support\Str;
 
 class BaseGenerator
 {
@@ -108,6 +109,11 @@ class BaseGenerator
     protected function getDatePrefix()
     {
         return date('Y_m_d_His');
+    }
+
+    protected function getRoute($model)
+    {
+        return Str::slug(Str::plural($model));
     }
 
 

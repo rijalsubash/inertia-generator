@@ -82,4 +82,4 @@ const $component_name$Field = ({ auth, pagedata = {} , toastData}) => {
     );
 };
 
-export default MyStubTestField;
+export default $component_name$Field;
