@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Console\Commands\Generator\ControllerGenerator;
 use App\Console\Commands\Generator\FormRequestGenerator;
+use App\Console\Commands\Generator\Frontend\IndexGenerator;
+use App\Console\Commands\Generator\Frontend\ViewGenerator;
 use App\Console\Commands\Generator\MigrationGenerator;
 use App\Console\Commands\Generator\ModelGenerator;
 use App\Console\Commands\Generator\RouteGenerator;
@@ -42,6 +44,7 @@ class GenerateCrud extends Command
         private ServiceGenerator $serviceGenerator,
         private FormRequestGenerator $formRequestGenerator,
         private RouteGenerator $routeGenerator,
+        private ViewGenerator $frontviewGenerator
     ) {
         parent::__construct();
 
@@ -64,5 +67,8 @@ class GenerateCrud extends Command
         $this->controllerGenerator->generate($this->argument('model'));
         $this->migrationGenerator->generate($this->argument('model'), $this->option('fields'));
         $this->modelGenerator->generate($this->argument('model'), $this->option('fields'));
+
+        // Front generators
+        $this->frontviewGenerator->generate($this->argument('model'), $this->option('fields'));
     }
 }

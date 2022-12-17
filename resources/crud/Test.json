@@ -3,12 +3,16 @@
         "column_name": "name",
         "data_type" : "string",
         "input_type": "text",
-        "rules": "required|in:12,23"
+        "rules": "required|in:12,23",
+        "label": "Name",
+        "in_datatable": true
     },
     {
         "column_name": "description",
         "data_type" : "text",
         "input_type": "textarea",
-        "rules": "nullable"
+        "rules": "nullable",
+        "label": "description",
+        "in_datatable": true
     }
 ]

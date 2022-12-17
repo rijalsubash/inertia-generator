@@ -11,7 +11,7 @@ class MyStubTest extends Model
 
     protected $fillable = ['name', 'description'];
 
-    public $rules = [
+    public static $rules = [
         'name'=> 'required',
         'description' => 'nullable'
     ];

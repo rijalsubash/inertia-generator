@@ -45,7 +45,10 @@ class HandleInertiaRequests extends Middleware
             },
             'config'  =>  [
                 'app_name' => \config('app.name')
-            ]
+            ],
+            'toastData'=> function() {
+                return \session('alert');
+            }
         ]);
     }
 }

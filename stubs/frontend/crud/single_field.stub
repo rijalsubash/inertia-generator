@@ -1,0 +1,18 @@
+ <div className="mt-4">
+    <InputLabel forInput="$name$" value="$label$" />
+
+    <TextInput
+        id="$name$"
+        name="$name$"
+        value={data.$name$}
+        className="mt-1 block w-full"
+        autoComplete="$name$"
+        isFocused={true}
+        handleChange={onHandleChange}
+    />
+
+    <InputError
+        message={errors.$name$}
+        className="mt-2"
+    />
+</div>
