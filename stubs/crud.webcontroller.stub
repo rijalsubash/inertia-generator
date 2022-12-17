@@ -3,7 +3,7 @@
 namespace $NAMESPACE$;
 
 use $NAMESPACE_SERVICE$;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\$CLASS_NAME$Request;
 use Illuminate\Http\Request;
 
 class $CLASS_NAME$Controller extends WebBaseController
