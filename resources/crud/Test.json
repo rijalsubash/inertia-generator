@@ -5,6 +5,7 @@
         "input_type": "text",
         "rules": "required|in:12,23",
         "label": "Name",
+        "searchable": true,
         "in_datatable": true
     },
     {

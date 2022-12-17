@@ -10,9 +10,9 @@ class $class$ extends Model
 {
     use HasFactory, SearchableTrait;
 
-    protected $fillable =
+    protected $fillable =  $fillable_fields$;
 
-    public static $rules =
+    public static $rules = $rules$;
 
-    protected $searchable =
+    protected $searchable = $searchable$;
 }

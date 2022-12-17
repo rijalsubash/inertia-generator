@@ -61,11 +61,11 @@ class GenerateCrud extends Command
             $this->error("Fields are required to generate crud");
             return;
         };
-        $this->routeGenerator->generate($this->argument('model'));
-        $this->formRequestGenerator->generate($this->argument('model'));
-        $this->serviceGenerator->generate($this->argument('model'));
-        $this->controllerGenerator->generate($this->argument('model'));
-        $this->migrationGenerator->generate($this->argument('model'), $this->option('fields'));
+        // $this->routeGenerator->generate($this->argument('model'));
+        // $this->formRequestGenerator->generate($this->argument('model'));
+        // $this->serviceGenerator->generate($this->argument('model'));
+        // $this->controllerGenerator->generate($this->argument('model'));
+        // $this->migrationGenerator->generate($this->argument('model'), $this->option('fields'));
         $this->modelGenerator->generate($this->argument('model'), $this->option('fields'));
 
         // Front generators
