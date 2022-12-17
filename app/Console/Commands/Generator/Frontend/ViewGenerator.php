@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Generator\Frontend;
 
 use App\Console\Commands\Generator\BaseGenerator;
@@ -10,15 +11,16 @@ class ViewGenerator extends BaseGenerator
     {
         $fieldsArr = (array) $this->getFieldsFromJson(config('generator.field_file_path') . '/' . $file);
 
-        $pageDirectory=  $this->createDirectory($model);
+        $pageDirectory =  $this->createDirectory($model);
+        $this->generateAction($model, $fieldsArr);
         $this->generateIndex($model, $fieldsArr, $pageDirectory);
         $this->generateField($model, $fieldsArr, $pageDirectory);
     }
 
-    public function createDirectory($model)
+    public function createDirectory($model, $type = 'Pages')
     {
         $dir = $this->getSingularClassName($model);
-        $path = \resource_path("/js/Pages/{$dir}");
+        $path = \resource_path("/js/{$type}/{$dir}");
         $this->makeDirectory($path);
         return $path;
     }
@@ -41,7 +43,6 @@ class ViewGenerator extends BaseGenerator
             'display_columns' => $this->getDisplayColumns($fieldsArr),
             'route_prefix' => $this->getRoute($model)
         ];
-
     }
 
     public function getRoute($model)
@@ -50,21 +51,21 @@ class ViewGenerator extends BaseGenerator
     }
 
     // Example response of this method
-        // const columns = [
+    // const columns = [
     //     { field: "name", headerName: "Name" },
     //     { field: "description", headerName: "Description" }
     // ];
     private function getDisplayColumns($fieldsArr)
     {
 
-      $val = "const columns = [";
-        $getField = function($name, $label) {
-            return  '{ field: "'.$name.'", headerName: "'.$label.'" },';
+        $val = "const columns = [";
+        $getField = function ($name, $label) {
+            return  '{ field: "' . $name . '", headerName: "' . $label . '" },';
         };
         foreach ($fieldsArr as  $col) {
-            if($col['in_datatable'] ?? false){
+            if ($col['in_datatable'] ?? false) {
                 // $val .= '\n';
-                 $val.= $getField($col['column_name'], ($col['label'] ??$col['column_name']));
+                $val .= $getField($col['column_name'], ($col['label'] ?? $col['column_name']));
             }
         }
         return $val . "]";
@@ -99,9 +100,30 @@ class ViewGenerator extends BaseGenerator
                 'label' => $field['label'],
                 'type' => $field['input_type']
             ];
-            $innerfieldData.= $this->getStubContents($singleFieldStub, $singleFieldVariabls);
+            $innerfieldData .= $this->getStubContents($singleFieldStub, $singleFieldVariabls);
         }
 
-      return $innerfieldData;
+        return $innerfieldData;
+    }
+
+    private function generateAction($model)
+    {
+        $componentDirectory =  $this->createDirectory($model, 'Components');
+
+        $indexFile = ($this->getStubPath('frontend/crud/action'));
+
+        $variableValues = $this->getActionVariableValues($model);
+
+        $readyToPublishData = $this->getStubContents($indexFile, $variableValues);
+
+        $this->publishFile($readyToPublishData, $componentDirectory . '/Action.jsx');
+    }
+
+    private function getActionVariableValues($model)
+    {
+        return [
+            'component_name' => $this->getSingularClassName($model),
+            'route_prefix' => $this->getRoute($model)
+        ];
     }
 }
