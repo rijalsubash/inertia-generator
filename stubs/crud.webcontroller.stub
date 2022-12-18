@@ -3,10 +3,10 @@
 namespace $NAMESPACE$;
 
 use $NAMESPACE_SERVICE$;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\$CLASS_NAME$Request;
 use Illuminate\Http\Request;
 
-class $CLASS_NAME$Controller extends Controller
+class $CLASS_NAME$Controller extends WebBaseController
 {
     public function __construct(private $CLASS_NAME$Service $service){
 
@@ -20,7 +20,7 @@ class $CLASS_NAME$Controller extends Controller
     public function index()
     {
         $SERVICE_PRURAL_VARIABLE$ = $this->service->paginate(request('per_page', 20), request('keywords', ''),  ["*"], 'page', null);
-        return $this->dataResponse(200, $SERVICE_PRURAL_VARIABLE$);
+        return $this->renderPage('$CLASS_NAME$/Index', ['data' => $SERVICE_PRURAL_VARIABLE$]);
 
     }
 
@@ -31,7 +31,7 @@ class $CLASS_NAME$Controller extends Controller
      */
     public function create()
     {
-        //
+        return $this->renderPage('$CLASS_NAME$/Fields', []);
     }
 
     /**
@@ -43,7 +43,10 @@ class $CLASS_NAME$Controller extends Controller
     public function store($CLASS_NAME$Request $request)
     {
       $$SERVICE_SINGULAR$ =  $this->service->create($request->validated());
-      return $this->successResponse(201, "$SERVICE_SINGULAR$ created.", $$SERVICE_SINGULAR$);
+        if ($request->create_another) {
+            return back()->with('alert', ['message'=> '$SERVICE_SINGULAR$ Created.' ]);
+        }
+      return \redirect()->route('$INDEX_ROUTE$.index')->with('alert', ['message'=> '$SERVICE_SINGULAR$ Created.' ]);
     }
 
     /**
@@ -55,7 +58,8 @@ class $CLASS_NAME$Controller extends Controller
     public function show($id)
     {
       $$SERVICE_SINGULAR$ =  $this->service->getById($id);
-      return $this->dataResponse(200, $$SERVICE_SINGULAR$);
+      \abort_if(empty($$SERVICE_SINGULAR$), 404, '$SERVICE_SINGULAR$ not found');
+      return $this->renderPage('$CLASS_NAME$/Show', ['data' => $$SERVICE_SINGULAR$]);
     }
 
     /**
@@ -66,7 +70,9 @@ class $CLASS_NAME$Controller extends Controller
      */
     public function edit($id)
     {
-        //
+        $$SERVICE_SINGULAR$ =  $this->service->getById($id);
+        \abort_if(empty($$SERVICE_SINGULAR$), 404, '$SERVICE_SINGULAR$ not found');
+        return $this->renderPage('$CLASS_NAME$/Fields', ['pagedata' => $$SERVICE_SINGULAR$]);
     }
 
     /**
@@ -78,8 +84,10 @@ class $CLASS_NAME$Controller extends Controller
      */
     public function update($CLASS_NAME$Request $request, $id)
     {
-      $$SERVICE_SINGULAR$ =  $this->service->update($id, $request->validated());
-      return $this->successResponse(200, "$SERVICE_SINGULAR$ updated.", $$SERVICE_SINGULAR$);
+        $$SERVICE_SINGULAR$ =  $this->service->getById($id);
+        \abort_if(empty($$SERVICE_SINGULAR$), 404, '$SERVICE_SINGULAR$ not found');
+        $this->service->update($id, $request->validated());
+        return \redirect()->route('$INDEX_ROUTE$.index')->with('alert', ['message'=> '$SERVICE_SINGULAR$ updated.' ]);
     }
 
     /**
@@ -91,6 +99,6 @@ class $CLASS_NAME$Controller extends Controller
     public function destroy($id)
     {
       $this->service->deleteById($id);
-      return $this->successResponse(200, "$SERVICE_SINGULAR$ Deleted.");
+      return \redirect()->route('$INDEX_ROUTE$.index')->with('alert', ['message'=> '$SERVICE_SINGULAR$ Deleted.' ]);
     }
 }

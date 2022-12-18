@@ -1,0 +1,13 @@
+import DeleteButton from "../Utility/Action/DeleteButton";
+import EditButton from "../Utility/Action/EditButton";
+
+const $component_name$Action = ({ row }) => {
+    return (
+        <div className="flex gap-1">
+            <EditButton url={route("$route_prefix$.edit", row.id)}/>
+            <DeleteButton url={route('$route_prefix$.destroy', row.id)}/>
+        </div>
+    );
+};
+
+export default $component_name$Action;

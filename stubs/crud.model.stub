@@ -2,14 +2,17 @@
 
 namespace $namespace$;
 
+use App\Traits\SearchableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class $class$ extends Model
 {
-    use HasFactory;
+    use HasFactory, SearchableTrait;
 
-    protected $fillable =
+    protected $fillable =  $fillable_fields$;
 
-    public $rules =
+    public static $rules = $rules$;
+
+    protected $searchable = $searchable$;
 }

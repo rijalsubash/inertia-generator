@@ -11,12 +11,13 @@ class RouteGenerator extends BaseGenerator
     {
         $routeFile = base_path('routes/web.php');
         $currentrouteFile = file($routeFile);
-        $currentrouteFile[count($currentrouteFile)] = "Route::resource('{$this->getRoute($model)}',{$this->getSingularClassName($model)}Controller::class);";
+        $currentrouteFile[count($currentrouteFile)] = "Route::resource('{$this->getRoute($model)}',{$this->getResourceController($model)});";
         \file_put_contents($routeFile, \implode('', $currentrouteFile));
     }
 
-    public function getRoute($model)
+
+    public function getResourceController($model)
     {
-        return Str::slug($model);
+        return "App\Http\Controllers\\{$this->getSingularClassName($model)}Controller::class";
     }
 }

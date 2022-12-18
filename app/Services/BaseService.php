@@ -214,12 +214,13 @@ abstract class BaseService
 
     /**
      * @param  int  $limit
+     * @param  string  $keywords
      * @param  array  $columns
-     * @param  string  $pageName
+     * @param  string  $columns
      * @param  null  $page
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function paginate($limit = 25,  $page = null, $keywords = '', array $columns = ['*'], $pageName = 'page',)
+    public function paginate($limit = 25,  $keywords = '', $columns = ['*'], $pageName = 'page', $page = null)
     {
         $this->newQuery()->eagerLoad()->setClauses()->setScopes();
         if (!empty($keywords) && count($this->getSearchableFields())) {
@@ -376,7 +377,7 @@ abstract class BaseService
 
     public function getSearchableFields()
     {
-        return $this->model->searchable();
+        return $this->model->getSearchable();
     }
 
     public function getSelect($fields = ['id', 'name as text'])

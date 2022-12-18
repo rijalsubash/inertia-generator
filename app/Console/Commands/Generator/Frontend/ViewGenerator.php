@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Console\Commands\Generator\Frontend;
 
 use App\Console\Commands\Generator\BaseGenerator;
@@ -10,15 +11,17 @@ class ViewGenerator extends BaseGenerator
     {
         $fieldsArr = (array) $this->getFieldsFromJson(config('generator.field_file_path') . '/' . $file);
 
-        $pageDirectory=  $this->createDirectory($model);
+        $pageDirectory =  $this->createDirectory($model);
+        $this->generateAction($model, $fieldsArr);
         $this->generateIndex($model, $fieldsArr, $pageDirectory);
         $this->generateField($model, $fieldsArr, $pageDirectory);
+        $this->generateNavigation($model);
     }
 
-    public function createDirectory($model)
+    public function createDirectory($model, $type = 'Pages')
     {
         $dir = $this->getSingularClassName($model);
-        $path = \resource_path("/js/Pages/{$dir}");
+        $path = \resource_path("/js/{$type}/{$dir}");
         $this->makeDirectory($path);
         return $path;
     }
@@ -41,30 +44,29 @@ class ViewGenerator extends BaseGenerator
             'display_columns' => $this->getDisplayColumns($fieldsArr),
             'route_prefix' => $this->getRoute($model)
         ];
-
     }
 
     public function getRoute($model)
     {
-        return Str::plural(Str::lower($model));
+        return Str::slug(Str::plural($model));
     }
 
     // Example response of this method
-        // const columns = [
+    // const columns = [
     //     { field: "name", headerName: "Name" },
     //     { field: "description", headerName: "Description" }
     // ];
     private function getDisplayColumns($fieldsArr)
     {
 
-      $val = "const columns = [";
-        $getField = function($name, $label) {
-            return  '{ field: "'.$name.'", headerName: "'.$label.'" },';
+        $val = "const columns = [";
+        $getField = function ($name, $label) {
+            return  '{ field: "' . $name . '", headerName: "' . $label . '" },';
         };
         foreach ($fieldsArr as  $col) {
-            if($col['in_datatable'] ?? false){
+            if ($col['in_datatable'] ?? false) {
                 // $val .= '\n';
-                 $val.= $getField($col['column_name'], ($col['label'] ??$col['column_name']));
+                $val .= $getField($col['column_name'], ($col['label'] ?? $col['column_name']));
             }
         }
         return $val . "]";
@@ -85,7 +87,8 @@ class ViewGenerator extends BaseGenerator
             'component_name' => $this->getSingularClassName($model),
             'page_title' => Str::title($model),
             'fields_content' => $this->getInnerFields($fieldsArr),
-            'route_prefix' => $this->getRoute($model)
+            'route_prefix' => $this->getRoute($model),
+            'fields_state' => $this->getFieldStates($fieldsArr)
         ];
     }
 
@@ -99,9 +102,56 @@ class ViewGenerator extends BaseGenerator
                 'label' => $field['label'],
                 'type' => $field['input_type']
             ];
-            $innerfieldData.= $this->getStubContents($singleFieldStub, $singleFieldVariabls);
+            $innerfieldData .= $this->getStubContents($singleFieldStub, $singleFieldVariabls);
         }
 
-      return $innerfieldData;
+        return $innerfieldData;
+    }
+
+    private function getFieldStates($fieldsArr)
+    {
+
+        $intDataTypes = ['integer', 'decimal', 'biginteger', 'unsignedBigInteger', 'tinyinteger'];
+        $returnData = [];
+        foreach ($fieldsArr as $key => $value) {
+          $returnData[$value['column_name']] = in_array($value['data_type'], $intDataTypes) ? 0 : null;
+        }
+        $returnData['create_another'] = false;
+        return json_encode($returnData);
+    }
+
+    private function generateAction($model)
+    {
+        $componentDirectory =  $this->createDirectory($model, 'Components');
+
+        $indexFile = ($this->getStubPath('frontend/crud/action'));
+
+        $variableValues = $this->getActionVariableValues($model);
+
+        $readyToPublishData = $this->getStubContents($indexFile, $variableValues);
+
+        $this->publishFile($readyToPublishData, $componentDirectory . '/Action.jsx');
+    }
+
+    private function getActionVariableValues($model)
+    {
+        return [
+            'component_name' => $this->getSingularClassName($model),
+            'route_prefix' => $this->getRoute($model)
+        ];
+    }
+
+    private function generateNavigation($model)
+    {
+        $filePath = resource_path('js/Components/Layout/Navigation/navlist.json');
+        $navlistArr = json_decode(file_get_contents($filePath), true);
+        $navItem = [
+            'label'=> Str::title($model),
+            'route' => $this->getRoute($model) . '.index',
+            'icon_name' => 'default'
+        ];
+        array_push($navlistArr, $navItem);
+       \file_put_contents($filePath,  json_encode($navlistArr));
+
     }
 }

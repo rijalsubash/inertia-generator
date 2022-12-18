@@ -14,11 +14,7 @@ const $component_name$Field = ({ auth, pagedata = {} , toastData}) => {
         errors,
         post,
         patch,
-    } = useForm({
-        name: pagedata.name || "",
-        description: pagedata.description || "",
-        create_another: false,
-    });
+    } = useForm($fields_state$);
     const onHandleChange = (event) => {
         setData(
             event.target.name,
@@ -82,4 +78,4 @@ const $component_name$Field = ({ auth, pagedata = {} , toastData}) => {
     );
 };
 
-export default MyStubTestField;
+export default $component_name$Field;
