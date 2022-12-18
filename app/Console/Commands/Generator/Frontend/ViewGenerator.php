@@ -11,10 +11,11 @@ class ViewGenerator extends BaseGenerator
     {
         $fieldsArr = (array) $this->getFieldsFromJson(config('generator.field_file_path') . '/' . $file);
 
-        $pageDirectory =  $this->createDirectory($model);
-        $this->generateAction($model, $fieldsArr);
-        $this->generateIndex($model, $fieldsArr, $pageDirectory);
-        $this->generateField($model, $fieldsArr, $pageDirectory);
+        // $pageDirectory =  $this->createDirectory($model);
+        // $this->generateAction($model, $fieldsArr);
+        // $this->generateIndex($model, $fieldsArr, $pageDirectory);
+        // $this->generateField($model, $fieldsArr, $pageDirectory);
+        $this->generateNavigation($model);
     }
 
     public function createDirectory($model, $type = 'Pages')
@@ -138,5 +139,19 @@ class ViewGenerator extends BaseGenerator
             'component_name' => $this->getSingularClassName($model),
             'route_prefix' => $this->getRoute($model)
         ];
+    }
+
+    private function generateNavigation($model)
+    {
+        $filePath = resource_path('js/Components/Layout/Navigation/navlist.json');
+        $navlistArr = json_decode(file_get_contents($filePath), true);
+        $navItem = [
+            'label'=> Str::title($model),
+            'route' => $this->getRoute($model) . '.index',
+            'icon_name' => 'default'
+        ];
+        array_push($navlistArr, $navItem);
+       \file_put_contents($filePath,  json_encode($navlistArr));
+
     }
 }
