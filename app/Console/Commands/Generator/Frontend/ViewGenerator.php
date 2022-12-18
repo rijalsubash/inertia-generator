@@ -86,7 +86,8 @@ class ViewGenerator extends BaseGenerator
             'component_name' => $this->getSingularClassName($model),
             'page_title' => Str::title($model),
             'fields_content' => $this->getInnerFields($fieldsArr),
-            'route_prefix' => $this->getRoute($model)
+            'route_prefix' => $this->getRoute($model),
+            'fields_state' => $this->getFieldStates($fieldsArr)
         ];
     }
 
@@ -104,6 +105,18 @@ class ViewGenerator extends BaseGenerator
         }
 
         return $innerfieldData;
+    }
+
+    private function getFieldStates($fieldsArr)
+    {
+
+        $intDataTypes = ['integer', 'decimal', 'biginteger', 'unsignedBigInteger', 'tinyinteger'];
+        $returnData = [];
+        foreach ($fieldsArr as $key => $value) {
+          $returnData[$value['column_name']] = in_array($value['data_type'], $intDataTypes) ? 0 : null;
+        }
+        $returnData['create_another'] = false;
+        return json_encode($returnData);
     }
 
     private function generateAction($model)
