@@ -9,11 +9,11 @@
         "in_datatable": true
     },
     {
-        "column_name": "description",
-        "data_type" : "text",
-        "input_type": "textarea",
+        "column_name": "birth_date",
+        "data_type" : "date",
+        "input_type": "date",
         "rules": "nullable",
-        "label": "description",
+        "label": "Birth Date",
         "in_datatable": true
     }
 ]
