@@ -11,10 +11,10 @@ class ViewGenerator extends BaseGenerator
     {
         $fieldsArr = (array) $this->getFieldsFromJson(config('generator.field_file_path') . '/' . $file);
 
-        // $pageDirectory =  $this->createDirectory($model);
-        // $this->generateAction($model, $fieldsArr);
-        // $this->generateIndex($model, $fieldsArr, $pageDirectory);
-        // $this->generateField($model, $fieldsArr, $pageDirectory);
+        $pageDirectory =  $this->createDirectory($model);
+        $this->generateAction($model, $fieldsArr);
+        $this->generateIndex($model, $fieldsArr, $pageDirectory);
+        $this->generateField($model, $fieldsArr, $pageDirectory);
         $this->generateNavigation($model);
     }
 
