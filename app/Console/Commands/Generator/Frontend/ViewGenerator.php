@@ -88,24 +88,53 @@ class ViewGenerator extends BaseGenerator
             'page_title' => Str::title($model),
             'fields_content' => $this->getInnerFields($fieldsArr),
             'route_prefix' => $this->getRoute($model),
-            'fields_state' => $this->getFieldStates($fieldsArr)
+            'fields_state' => $this->getFieldStates($fieldsArr),
+            'import_statements'=> $this->getImportStatements($fieldsArr)
         ];
     }
 
     private function getInnerFields($fieldsArr)
     {
         $innerfieldData = '';
-        $singleFieldStub = $this->getStubPath('frontend/crud/single_field');
         foreach ($fieldsArr as  $field) {
+            $singleFieldStub = $this->getStubPath($this->getFieldStubByType($field['input_type']));
             $singleFieldVariabls = [
                 'name' => $field['column_name'],
                 'label' => $field['label'],
-                'type' => $field['input_type']
+                'type' => $field['input_type'],
+                'options' => json_encode($field['options'] ?? [])
             ];
             $innerfieldData .= $this->getStubContents($singleFieldStub, $singleFieldVariabls);
         }
 
         return $innerfieldData;
+    }
+
+    private function getFieldStubByType($type)
+    {
+        $stubBytype= [
+            'checkbox' => 'frontend/crud/checkbox',
+            'select' => 'frontend/crud/select',
+            'radio' => 'frontend/crud/radio',
+            'date' => 'frontend/crud/date',
+        ];
+        return $stubBytype[$type] ?? 'frontend/crud/single_field';
+    }
+
+    private function getImportStatements($fieldsArr)
+    {
+        $inputTypes = \array_column($fieldsArr, "input_type");
+        $stubBytype= [
+            'select' => 'import Select from "@/Components/Select";',
+            'radio' => 'import Radio from "@/Components/Radio";',
+            'date' => 'import DatePicker from "@/Components/DatePicker";',
+        ];
+        $typesNeedToImport = \array_intersect($inputTypes, \array_keys($stubBytype));
+        $statement = "";
+        foreach ($typesNeedToImport as  $type) {
+            $statement .= $stubBytype[$type] . "\n";
+        }
+        return $statement;
     }
 
     private function getFieldStates($fieldsArr)

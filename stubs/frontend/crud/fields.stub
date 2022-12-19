@@ -5,6 +5,7 @@ import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Checkbox from "@/Components/Checkbox";
+$import_statements$
 const $component_name$Field = ({ auth, pagedata = {} , toastData}) => {
     const {
         data,

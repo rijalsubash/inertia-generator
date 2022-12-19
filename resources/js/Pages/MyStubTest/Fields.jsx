@@ -5,11 +5,13 @@ import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Checkbox from "@/Components/Checkbox";
+import Radio from "@/Components/Radio";
 const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
     const { data, setData, processing, reset, errors, post, patch } = useForm({
         name: pagedata.name || "",
         description: pagedata.description || "",
         create_another: false,
+        test: "",
     });
     const onHandleChange = (event) => {
         setData(
@@ -85,6 +87,23 @@ const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
                                     className="mt-2"
                                 />
                             </div>
+                            <div className="mt-4">
+                                <Radio
+                                    name="test"
+                                    label="test"
+                                    handleChange={onHandleChange}
+                                    options={[
+                                        { value: 1, label: "opt1" },
+                                        { value: 2, label: "opt2" }
+                                    ]}
+                                    selectedVal={data.test}
+                                />
+
+                                <InputError
+                                    message={errors.description}
+                                    className="mt-2"
+                                />
+                            </div>
                         </div>
                         <div className=" flex my-4 w-100">
                             <PrimaryButton processing={processing}>
@@ -113,3 +132,6 @@ const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
 };
 
 export default MyStubTestField;
+
+
+

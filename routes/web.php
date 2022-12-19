@@ -39,3 +39,4 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+Route::resource('tests',App\Http\Controllers\TestController::class);
