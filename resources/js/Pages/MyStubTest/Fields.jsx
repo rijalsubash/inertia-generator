@@ -6,14 +6,14 @@ import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Checkbox from "@/Components/Checkbox";
 import Radio from "@/Components/Radio";
-import Autocomplete from "@/Components/Autocomplete";
+import DatePicker from "@/Components/DatePicker";
 const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
     const { data, setData, processing, reset, errors, post, patch } = useForm({
         name: pagedata.name || "",
         description: pagedata.description || "",
         create_another: false,
         test: "",
-        autocomplete: null,
+        datepicker: null,
     });
     const onHandleChange = (event, name = null) => {
         if (!event.target && name) {
@@ -61,7 +61,7 @@ const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
                                     name="name"
                                     value={data.name}
                                     className="mt-1 block w-full"
-                                    autoComplete="name"
+                                    datepicker="name"
                                     isFocused={true}
                                     handleChange={onHandleChange}
                                 />
@@ -84,7 +84,7 @@ const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
                                     name="description"
                                     value={data.description}
                                     className="mt-1 block w-full"
-                                    autoComplete="username"
+                                    datepicker="username"
                                     handleChange={onHandleChange}
                                 />
 
@@ -112,20 +112,13 @@ const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
                             </div>
                             <div className="mt-4">
                                 <InputLabel
-                                    forInput="autocomplete"
-                                    value="autocomplete"
+                                    forInput="datepicker"
+                                    value="datepicker"
                                 />
-                                <Autocomplete
-                                    options={[
-                                        { value: 1, label: "opt1" },
-                                        { value: 2, label: "opt2" },
-                                    ]}
-                                    onChange={(val) => onHandleChange(val, "autocomplete")}
-                                    selectedVal={data.autocomplete}
-                                />
+                                <DatePicker value={data.datepicker} onChange={(val)=> onHandleChange(val, 'datepicker')} />
 
                                 <InputError
-                                    message={errors.autocomplete}
+                                    message={errors.datepicker}
                                     className="mt-2"
                                 />
                             </div>

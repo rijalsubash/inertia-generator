@@ -117,7 +117,7 @@ class ViewGenerator extends BaseGenerator
             'select' => 'frontend/crud/autocomplete',
             'autocomplete' => 'frontend/crud/autocomplete',
             'radio' => 'frontend/crud/radio',
-            'date' => 'frontend/crud/date',
+            'date' => 'frontend/crud/datepicker',
         ];
         return $stubBytype[$type] ?? 'frontend/crud/single_field';
     }
@@ -129,6 +129,7 @@ class ViewGenerator extends BaseGenerator
             'select' => 'import Select from "@/Components/Select";',
             'radio' => 'import Radio from "@/Components/Radio";',
             'date' => 'import DatePicker from "@/Components/DatePicker";',
+            'datepicker' => 'import DatePicker from "@/Components/DatePicker";',
             'select' => 'import Autocomplete from "@/Components/Autocomplete";',
             'autocomplete' => 'import Autocomplete from "@/Components/Autocomplete";',
         ];
