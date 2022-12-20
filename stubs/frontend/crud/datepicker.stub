@@ -1,0 +1,12 @@
+<div className="mt-4">
+    <InputLabel
+        forInput="$name$"
+        value="$label$"
+    />
+    <DatePicker value={data.$name$} onChange={(val)=> onHandleChange(val, '$name$')} />
+
+    <InputError
+        message={errors.$name$}
+        className="mt-2"
+    />
+</div>

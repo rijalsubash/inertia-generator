@@ -1,7 +1,7 @@
 [
     {
         "column_name": "name",
-        "data_type" : "string",
+        "data_type": "string",
         "input_type": "text",
         "rules": "required|in:12,23",
         "label": "Name",
@@ -10,10 +10,37 @@
     },
     {
         "column_name": "birth_date",
-        "data_type" : "date",
-        "input_type": "date",
+        "data_type": "text",
+        "input_type": "text",
         "rules": "nullable",
         "label": "Birth Date",
         "in_datatable": true
+    },
+    {
+        "column_name": "radio_group",
+        "data_type": "integer",
+        "input_type": "radio",
+        "rules": "nullable",
+        "label": "Radio Example",
+        "options": [
+            {"value": 1, "label":"opt 1"},
+            {"value": 2, "label":"opt 2"}
+        ],
+        "in_datatable": false
+    },
+    {
+        "column_name": "autocomplete_test",
+        "data_type": "integer",
+        "input_type": "select",
+        "rules": "nullable",
+        "label": "Select/Autocomplete Example",
+        "options": [
+            {"value": 1, "label":"opt 1"},
+            {"value": 2, "label":"opt 2"},
+            {"value": 3, "label":"opt 3"},
+            {"value": 4, "label":"opt 4"},
+            {"value": 5, "label":"opt 5"}
+        ],
+        "in_datatable": false
     }
 ]

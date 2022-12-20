@@ -1,7 +1,6 @@
+import TextInput from "@/Components/TextInput";
 import { Inertia } from "@inertiajs/inertia";
 import { useForm } from "@inertiajs/inertia-react";
-import { useEffect } from "react";
-import { TextInput } from "../TextInput";
 
 export const TablePaginationActions = ({
     previousPageUrl,

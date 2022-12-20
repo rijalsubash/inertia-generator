@@ -1,0 +1,16 @@
+        <div className="mt-11">
+            <label className="flex items-center">
+                <Checkbox
+                    name="$name$"
+                    value={data.$name$}
+                    handleChange={onHandleChange}
+                />
+                <span className="ml-2 text-sm text-gray-600">
+                   $label$
+                </span>
+            </label>
+            <InputError
+                message={errors.$name$}
+                className="mt-2"
+            />
+        </div>

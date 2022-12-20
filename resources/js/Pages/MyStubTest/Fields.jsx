@@ -5,19 +5,27 @@ import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Checkbox from "@/Components/Checkbox";
+import Radio from "@/Components/Radio";
+import DatePicker from "@/Components/DatePicker";
 const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
     const { data, setData, processing, reset, errors, post, patch } = useForm({
         name: pagedata.name || "",
         description: pagedata.description || "",
         create_another: false,
+        test: "",
+        datepicker: null,
     });
-    const onHandleChange = (event) => {
-        setData(
-            event.target.name,
-            event.target.type === "checkbox"
-                ? event.target.checked
-                : event.target.value
-        );
+    const onHandleChange = (event, name = null) => {
+        if (!event.target && name) {
+            setData(name, event);
+        } else {
+            setData(
+                event.target.name,
+                event.target.type === "checkbox"
+                    ? event.target.checked
+                    : event.target.value
+            );
+        }
     };
 
     const handleSubmit = (e) => {
@@ -53,7 +61,7 @@ const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
                                     name="name"
                                     value={data.name}
                                     className="mt-1 block w-full"
-                                    autoComplete="name"
+                                    datepicker="name"
                                     isFocused={true}
                                     handleChange={onHandleChange}
                                 />
@@ -76,12 +84,41 @@ const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
                                     name="description"
                                     value={data.description}
                                     className="mt-1 block w-full"
-                                    autoComplete="username"
+                                    datepicker="username"
                                     handleChange={onHandleChange}
                                 />
 
                                 <InputError
                                     message={errors.description}
+                                    className="mt-2"
+                                />
+                            </div>
+                            <div className="mt-4">
+                                <Radio
+                                    name="test"
+                                    label="test"
+                                    handleChange={onHandleChange}
+                                    options={[
+                                        { value: 1, label: "opt1" },
+                                        { value: 2, label: "opt2" },
+                                    ]}
+                                    selectedVal={data.test}
+                                />
+
+                                <InputError
+                                    message={errors.description}
+                                    className="mt-2"
+                                />
+                            </div>
+                            <div className="mt-4">
+                                <InputLabel
+                                    forInput="datepicker"
+                                    value="datepicker"
+                                />
+                                <DatePicker value={data.datepicker} onChange={(val)=> onHandleChange(val, 'datepicker')} />
+
+                                <InputError
+                                    message={errors.datepicker}
                                     className="mt-2"
                                 />
                             </div>

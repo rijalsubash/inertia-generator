@@ -1,0 +1,14 @@
+ <div className="mt-4">
+    <Radio
+        name="$name$"
+        label="$label$"
+        handleChange={onHandleChange}
+        options={$options$}
+        selectedVal={data.$name$}
+    />
+
+    <InputError
+        message={errors.$name$}
+        className="mt-2"
+    />
+</div>
