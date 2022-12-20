@@ -6,20 +6,26 @@ import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Checkbox from "@/Components/Checkbox";
 import Radio from "@/Components/Radio";
+import Autocomplete from "@/Components/Autocomplete";
 const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
     const { data, setData, processing, reset, errors, post, patch } = useForm({
         name: pagedata.name || "",
         description: pagedata.description || "",
         create_another: false,
         test: "",
+        autocomplete: null,
     });
-    const onHandleChange = (event) => {
-        setData(
-            event.target.name,
-            event.target.type === "checkbox"
-                ? event.target.checked
-                : event.target.value
-        );
+    const onHandleChange = (event, name = null) => {
+        if (!event.target && name) {
+            setData(name, event);
+        } else {
+            setData(
+                event.target.name,
+                event.target.type === "checkbox"
+                    ? event.target.checked
+                    : event.target.value
+            );
+        }
     };
 
     const handleSubmit = (e) => {
@@ -94,13 +100,32 @@ const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
                                     handleChange={onHandleChange}
                                     options={[
                                         { value: 1, label: "opt1" },
-                                        { value: 2, label: "opt2" }
+                                        { value: 2, label: "opt2" },
                                     ]}
                                     selectedVal={data.test}
                                 />
 
                                 <InputError
                                     message={errors.description}
+                                    className="mt-2"
+                                />
+                            </div>
+                            <div className="mt-4">
+                                <InputLabel
+                                    forInput="autocomplete"
+                                    value="autocomplete"
+                                />
+                                <Autocomplete
+                                    options={[
+                                        { value: 1, label: "opt1" },
+                                        { value: 2, label: "opt2" },
+                                    ]}
+                                    onChange={(val) => onHandleChange(val, "autocomplete")}
+                                    selectedVal={data.autocomplete}
+                                />
+
+                                <InputError
+                                    message={errors.autocomplete}
                                     className="mt-2"
                                 />
                             </div>
@@ -132,6 +157,3 @@ const MyStubTestField = ({ auth, pagedata = {}, toastData }) => {
 };
 
 export default MyStubTestField;
-
-
-

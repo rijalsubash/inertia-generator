@@ -114,7 +114,8 @@ class ViewGenerator extends BaseGenerator
     {
         $stubBytype= [
             'checkbox' => 'frontend/crud/checkbox',
-            'select' => 'frontend/crud/select',
+            'select' => 'frontend/crud/autocomplete',
+            'autocomplete' => 'frontend/crud/autocomplete',
             'radio' => 'frontend/crud/radio',
             'date' => 'frontend/crud/date',
         ];
@@ -128,6 +129,8 @@ class ViewGenerator extends BaseGenerator
             'select' => 'import Select from "@/Components/Select";',
             'radio' => 'import Radio from "@/Components/Radio";',
             'date' => 'import DatePicker from "@/Components/DatePicker";',
+            'select' => 'import Autocomplete from "@/Components/Autocomplete";',
+            'autocomplete' => 'import Autocomplete from "@/Components/Autocomplete";',
         ];
         $typesNeedToImport = \array_intersect($inputTypes, \array_keys($stubBytype));
         $statement = "";

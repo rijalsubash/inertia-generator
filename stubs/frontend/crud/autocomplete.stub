@@ -1,0 +1,16 @@
+ <div className="mt-4">
+    <InputLabel
+        forInput="$name$"
+        value="$label$"
+    />
+    <Autocomplete
+        options={$options$}
+        onChange={(val) => onHandleChange(val, "$name$")}
+        selectedVal={data.$name$}
+    />
+
+    <InputError
+        message={errors.$name$}
+        className="mt-2"
+    />
+</div>

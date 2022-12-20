@@ -16,13 +16,19 @@ const $component_name$Field = ({ auth, pagedata = {} , toastData}) => {
         post,
         patch,
     } = useForm($fields_state$);
-    const onHandleChange = (event) => {
-        setData(
-            event.target.name,
-            event.target.type === "checkbox"
-                ? event.target.checked
-                : event.target.value
-        );
+
+
+    const onHandleChange = (event, name = null) => {
+        if (!event.target && name) {
+            setData(name, event);
+        } else {
+            setData(
+                event.target.name,
+                event.target.type === "checkbox"
+                    ? event.target.checked
+                    : event.target.value
+            );
+        }
     };
 
 
