@@ -8,7 +8,9 @@
 ### steps to install
     - Clone the repository
     - Create Docker network
-    - Run Docker compose up
+    - Run Compoer Install
+    - Run Docker compose up 
+    - Run npm install 
     - Run npm run dev
 
 ## CRUD Generation Guide
