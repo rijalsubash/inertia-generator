@@ -3,6 +3,8 @@
 
 ### dependencies and requirements
     - Docker and Docker compose
+    - composer
+    - php 8+
     - Node and Npm
 
 ### steps to install
